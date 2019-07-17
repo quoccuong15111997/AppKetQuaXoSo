@@ -6,45 +6,49 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.ss.bottomnavigation.BottomNavigation;
+import com.ss.bottomnavigation.events.OnSelectedItemChangeListener;
 
 public class MainActivity extends AppCompatActivity {
-    private TextView mTextMessage;
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_mien_bac:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frag_container,new MienBacFragment()).commit();
-                    return true;
-                case R.id.navigation_mien_nam:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frag_container,new MienNamFragment()).commit();
-                    return true;
-                case R.id.navigation_mien_trung:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frag_container,new MienTrungFragment()).commit();
-                    return true;
-                case R.id.navigation_hoi_nhom:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frag_container,new HoiNhomFragment()).commit();
-                    return true;
-                case R.id.navigation_thoi_tiet:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frag_container,new ThoiTietFragment()).commit();
-                    return true;
-            }
-            return false;
-        }
-    };
-
+    private FragmentTransaction transaction;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-        mTextMessage = findViewById(R.id.message);
-        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        BottomNavigation bottomNavigation=(BottomNavigation)findViewById(R.id.bottom_navigation);
+        bottomNavigation.setDefaultItem(0);
+        bottomNavigation.setOnSelectedItemChangeListener(new OnSelectedItemChangeListener() {
+            @Override
+            public void onSelectedItemChanged(int itemId) {
+                switch (itemId){
+                    case R.id.tab_home:
+                        transaction=getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.frame_fragment_containers,new MienBacFragment());
+                        break;
+                    case R.id.tab_images:
+                        transaction=getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.frame_fragment_containers,new MienNamFragment());
+                        break;
+                    case R.id.tab_camera:
+                        transaction=getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.frame_fragment_containers,new MienTrungFragment());
+                        break;
+                    case R.id.tab_products:
+                        transaction=getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.frame_fragment_containers,new HoiNhomFragment());
+                        break;
+                    case R.id.tab_more:
+                        transaction=getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.frame_fragment_containers,new ThoiTietFragment());
+                        break;
+                }
+                transaction.commit();
+            }
+        });
+
     }
 
 }

@@ -1,28 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+    <com.ss.bottomnavigation.BottomNavigation
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        app:mode="phone">
+        <com.ss.bottomnavigation.TabItem
+            android:id="@+id/tab_home"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:tab_text="Bắc"
+            app:tab_icon="@drawable/icons8xboxb30"
+            />
+
+        <com.ss.bottomnavigation.TabItem
+            android:id="@+id/tab_images"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:tab_text="Trung"
+            app:tab_icon="@drawable/trung"
+            />
+
+        <com.ss.bottomnavigation.TabItem
+            android:id="@+id/tab_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:tab_text="Nam"
+            app:tab_icon="@drawable/ic_nam"
+
+            />
+
+        <com.ss.bottomnavigation.TabItem
+            android:id="@+id/tab_products"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:tab_text="Chat"
+            app:tab_icon="@drawable/icons8chat" />
+
+        <com.ss.bottomnavigation.TabItem
+            android:id="@+id/tab_more"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:tab_text="Thời Tiết"
+            app:tab_icon="@drawable/icons8fog30"
+            />
+
+    </com.ss.bottomnavigation.BottomNavigation>
 
     <FrameLayout
-        android:id="@+id/frag_container"
+        android:id="@+id/frame_fragment_containers"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </FrameLayout>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
-        android:background="?android:attr/windowBackground"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/bottom_nav_menu" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_navigation"/>
+</RelativeLayout>
