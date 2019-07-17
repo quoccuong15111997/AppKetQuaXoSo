@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_mien_bac"
+        android:icon="@drawable/ic_mien_bac"
+        android:title="Miền Bắc" />
+    <item
+        android:id="@+id/navigation_mien_nam"
+        android:icon="@drawable/ic_mien_nam"
+        android:title="Miền Nam" />
+    <item
+        android:id="@+id/navigation_mien_trung"
+        android:icon="@drawable/ic_mien_trung"
+        android:title="Miền Trung" />
+    <item
+        android:id="@+id/navigation_hoi_nhom"
+        android:icon="@drawable/ic_chat"
+        android:title="Hội Nhóm" />
+    <item
+        android:id="@+id/navigation_thoi_tiet"
+        android:icon="@drawable/ic_weather"
+        android:title="Thời Tiết" />
+
+</menu>
