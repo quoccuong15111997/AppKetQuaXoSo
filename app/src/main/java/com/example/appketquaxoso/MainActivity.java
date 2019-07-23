@@ -30,11 +30,11 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.tab_images:
                         transaction=getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.frame_fragment_containers,new MienNamFragment());
+                        transaction.replace(R.id.frame_fragment_containers,new MienTrungFragment());
                         break;
                     case R.id.tab_camera:
                         transaction=getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.frame_fragment_containers,new MienTrungFragment());
+                        transaction.replace(R.id.frame_fragment_containers,new MienNamFragment());
                         break;
                     case R.id.tab_products:
                         transaction=getSupportFragmentManager().beginTransaction();

@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,13 +21,26 @@ import com.example.model.ChiTietKetQua;
 import com.example.model.JsonKQSX;
 import com.example.model.KQSX;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Url;
 
+import static com.example.constant.Constant.BASE_URL;
 import static com.example.constant.Constant.MIEN_BAC_URL;
 
 public class MienBacFragment extends Fragment {
@@ -46,75 +60,68 @@ public class MienBacFragment extends Fragment {
     }
 
     private void addControls() {
-      /*  ketQuas= new ArrayList<>();
+        ketQuas= new ArrayList<>();
         recyMienBac= view.findViewById(R.id.recycle_mien_bac);
-        recyMienBac.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        recyMienBac.setLayoutManager(new LinearLayoutManager(view.getContext(),RecyclerView.HORIZONTAL,false));
+        recyMienBac.addItemDecoration(new DividerItemDecoration(view.getContext(),RecyclerView.HORIZONTAL));
         ketQuaAdapter= new KetQuaAdapter(view.getContext(),ketQuas);
-        recyMienBac.setAdapter(ketQuaAdapter);*/
-
-        //getData(MIEN_BAC_URL);
-        get gets= new get();
-        gets.execute(MIEN_BAC_URL);
+        recyMienBac.setAdapter(ketQuaAdapter);
+        GetKetQuaTak tak= new GetKetQuaTak();
+        tak.execute();
     }
-    class get extends AsyncTask<String,Void,ArrayList<ChiTietKetQua>>{
+    class GetKetQuaTak extends AsyncTask<Void,Void,ArrayList<KQSX>>{
         @Override
-        protected void onPostExecute(ArrayList<ChiTietKetQua> chiTietKetQuas) {
-            super.onPostExecute(chiTietKetQuas);
+        protected void onPostExecute(ArrayList<KQSX> kqsxes) {
+            super.onPostExecute(kqsxes);
+            for (KQSX kqsx : kqsxes){
+                ketQuas.add(convertData(kqsx.getDescription(),kqsx.getTitle()));
+            }
+            ketQuaAdapter.notifyDataSetChanged();
         }
 
         @Override
-        protected ArrayList<ChiTietKetQua> doInBackground(String... strings) {
-            final ArrayList<ChiTietKetQua> chiTietKetQuas= new ArrayList<>();
+        protected ArrayList<KQSX> doInBackground(Void... voids) {
+            ArrayList<KQSX> kqsxes= new ArrayList<>();
+            try {
+                URL url= new URL(BASE_URL+MIEN_BAC_URL);
+                HttpURLConnection connection= (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
 
-            KetQuaXoSoService.getInstance().getKetQua(new Callback<JsonKQSX>() {
-                @Override
-                public void onResponse(Call<JsonKQSX> call, Response<JsonKQSX> response) {
-                    if (response.isSuccessful()){
-                        JsonKQSX jsonKQSX=response.body();
-                        String s=jsonKQSX.getStatus();
-                        List<KQSX> arr=jsonKQSX.getListItem();
-                        for (KQSX kqsx : arr){
-                            chiTietKetQuas.add(convertData(kqsx.getDescription()));
-                        }
-                    }
+                InputStreamReader isr = new InputStreamReader(connection.getInputStream());
+                BufferedReader br = new BufferedReader(isr);
+                StringBuilder builder = new StringBuilder();
+                String line = null;
+                while ((line = br.readLine()) != null) {
+                    builder.append(line);
                 }
-                @Override
-                public void onFailure(Call<JsonKQSX> call, Throwable t) {
+                JSONObject jsonObject= new JSONObject(builder.toString());
+                JSONArray arrItem=jsonObject.getJSONArray("items");
+                for (int i=0;i<arrItem.length();i++){
+                    JSONObject item=arrItem.getJSONObject(i);
+                    KQSX kqsx= new KQSX();
+                    kqsx.setTitle(item.getString("title"));
+                    kqsx.setPubDate(item.getString("pubDate"));
+                    kqsx.setLink(item.getString("link"));
+                    kqsx.setDescription(item.getString("description"));
+                    kqsx.setContent(item.getString("content"));
+                    kqsxes.add(kqsx);
+                }
+            }
+            catch (Exception ex){
 
-                }
-            },strings[0]);
-            return chiTietKetQuas;
+            }
+            return kqsxes;
         }
-    }
-    private void getData(String url){
-        KetQuaXoSoService.getInstance().getKetQua(new Callback<JsonKQSX>() {
-            @Override
-            public void onResponse(Call<JsonKQSX> call, Response<JsonKQSX> response) {
-                if (response.isSuccessful()){
-                    ArrayList<ChiTietKetQua> chiTietKetQuas= new ArrayList<>();
-                    JsonKQSX jsonKQSX=response.body();
-                    String s=jsonKQSX.getStatus();
-                   /* List<KQSX> arr=jsonKQSX.getListItem();
-                    for (KQSX kqsx : arr){
-                        chiTietKetQuas.add(convertData(kqsx.getDescription()));
-                    }
-                   *//* ketQuas.addAll(chiTietKetQuas);
-                    ketQuaAdapter.notifyDataSetChanged();*/
-                }
-            }
-            @Override
-            public void onFailure(Call<JsonKQSX> call, Throwable t) {
-
-            }
-        },url);
     }
     private String doRegex(String s){
         String []kq=s.split("\n");
         return  kq[0];
     }
-    private ChiTietKetQua convertData(String data) {
+    private ChiTietKetQua convertData(String data,String title) {
         ChiTietKetQua chiTiet= new ChiTietKetQua();
-        chiTiet.setTitle("Test");
+        String []str=title.split("\\(");
+        chiTiet.setTitle(str[0]+"\n"+str[1].replace(')',' '));
         String []items=data.split(":");
         chiTiet.setGiaiDB(doRegex(items[1].trim()));
         chiTiet.setGiai1(doRegex(items[2].trim()));
@@ -124,7 +131,13 @@ public class MienBacFragment extends Fragment {
         chiTiet.setGiai5(doRegex(items[6].trim()));
         chiTiet.setGiai6(doRegex(items[7].trim()));
         chiTiet.setGiai7(doRegex(items[8].trim()));
-        chiTiet.setGiai8(doRegex(items[9].trim()));
+        if (items.length==10){
+            chiTiet.setGiai8(doRegex(items[9].trim()));
+        }
+        else {
+            chiTiet.setGiai8("");
+        }
+
         return chiTiet;
     }
 }

@@ -41,7 +41,7 @@ public class KetQuaAdapter extends RecyclerView.Adapter<KetQuaAdapter.ViewHolder
         viewHolder.txtG6.setText(chiTietKetQua.getGiai6());
         viewHolder.txtG7.setText(chiTietKetQua.getGiai7());
         viewHolder.txtG8.setText(chiTietKetQua.getGiai8());
-        viewHolder.txtGDB.setText(chiTietKetQua.getGiai1());
+        viewHolder.txtGDB.setText(chiTietKetQua.getGiaiDB());
     }
 
     @Override
