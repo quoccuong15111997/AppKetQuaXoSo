@@ -17,41 +17,41 @@
             android:id="@+id/tab_home"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            app:tab_text="Bắc"
-            app:tab_icon="@drawable/icons8xboxb30"
-            />
+            app:tab_text="Bắc"/>
+            <!--app:tab_icon="@drawable/icons8xboxb30"-->
+
 
         <com.ss.bottomnavigation.TabItem
             android:id="@+id/tab_images"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            app:tab_text="Trung"
-            app:tab_icon="@drawable/trung"
-            />
+            app:tab_text="Trung"/>
+            <!--app:tab_icon="@drawable/trung"-->
+
 
         <com.ss.bottomnavigation.TabItem
             android:id="@+id/tab_camera"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            app:tab_text="Nam"
-            app:tab_icon="@drawable/ic_nam"
+            app:tab_text="Nam"/>
+           <!-- app:tab_icon="@drawable/ic_nam"-->
 
-            />
+
 
         <com.ss.bottomnavigation.TabItem
             android:id="@+id/tab_products"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            app:tab_text="Chat"
-            app:tab_icon="@drawable/icons8chat" />
+            app:tab_text="Chat"/>
+           <!-- app:tab_icon="@drawable/icons8chat" />-->
 
         <com.ss.bottomnavigation.TabItem
             android:id="@+id/tab_more"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            app:tab_text="Thời Tiết"
-            app:tab_icon="@drawable/icons8fog30"
-            />
+            app:tab_text="Thời Tiết"/>
+           <!-- app:tab_icon="@drawable/icons8fog30"
+            />-->
 
     </com.ss.bottomnavigation.BottomNavigation>
 
