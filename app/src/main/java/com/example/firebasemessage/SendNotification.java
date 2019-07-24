@@ -14,13 +14,12 @@ import cz.msebera.android.httpclient.HttpHeaders;
 import cz.msebera.android.httpclient.entity.StringEntity;
 
 public class SendNotification {
-    SongFirebase songFirebase;
-    Context context;
+    /*Context context;
     public SendNotification(SongFirebase songFirebase, Context context){
         this.songFirebase=songFirebase;
         this.context=context;
     }
-    public void send(){
+    //public void send(){
         try {
             String url = "https://fcm.googleapis.com/fcm/send";
             AsyncHttpClient client = new AsyncHttpClient();
@@ -56,5 +55,5 @@ public class SendNotification {
         catch (Exception ex){
             ex.printStackTrace();
         }
-    }
+    }*/
 }

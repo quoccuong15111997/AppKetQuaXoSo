@@ -2,15 +2,13 @@ package com.example.appketquaxoso;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,9 +34,7 @@ import java.util.regex.Pattern;
 import cz.msebera.android.httpclient.HttpHeaders;
 import cz.msebera.android.httpclient.entity.StringEntity;
 
-
-public class HoiNhomFragment extends Fragment {
-    View view;
+public class ChatActivity extends AppCompatActivity {
     FloatingActionButton fabSend;
     EditText edtInput;
     RecyclerView rcyMessege;
@@ -50,11 +46,13 @@ public class HoiNhomFragment extends Fragment {
     private DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
     String urlImage = "https://github.com/quoccuong151197/AppAndroid/blob/master/app/src/main/res/drawable/ic_fist_sub.png";
     private static final String TAG = "ChatActivity";
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = (View) inflater.inflate(R.layout.fragment_hoi_nhom, container, false);
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_chat);
         addControls();
         addEvents();
-        return view;
     }
 
     private void addEvents() {
@@ -69,20 +67,27 @@ public class HoiNhomFragment extends Fragment {
                 edtInput.setText("");
             }
         });
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void addControls() {
-        user= new User("thuyhuynh");
+        user= new User("quoccuong");
         dsMessages = new ArrayList<>();
-        fabSend = view.findViewById(R.id.fab);
-        edtInput = view.findViewById(R.id.edtInput);
-        imgBack = view.findViewById(R.id.iv_back);
-        rcyMessege = view.findViewById(R.id.lvMessages);
-        rcyMessege.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        adapter = new ChatAdapter(view.getContext(), dsMessages, user);
+        fabSend = findViewById(R.id.fab);
+        edtInput = findViewById(R.id.edtInput);
+        imgBack = findViewById(R.id.iv_back);
+        rcyMessege = findViewById(R.id.lvMessages);
+        rcyMessege.setLayoutManager(new LinearLayoutManager(ChatActivity.this));
+        adapter = new ChatAdapter(ChatActivity.this, dsMessages, user);
         rcyMessege.setAdapter(adapter);
         displayChatMessages();
     }
+
     private void displayChatMessages() {
         mData.child("chats").addChildEventListener(new ChildEventListener() {
             @Override
@@ -135,7 +140,7 @@ public class HoiNhomFragment extends Fragment {
 
             StringEntity entity = new StringEntity(params.toString());
 
-            client.post(view.getContext().getApplicationContext(), url, entity, RequestParams.APPLICATION_JSON, new TextHttpResponseHandler() {
+            client.post(getApplicationContext(), url, entity, RequestParams.APPLICATION_JSON, new TextHttpResponseHandler() {
                 @Override
                 public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString, Throwable throwable) {
                     Log.i(TAG, responseString);

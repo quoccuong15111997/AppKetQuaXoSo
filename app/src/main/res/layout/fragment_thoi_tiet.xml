@@ -23,31 +23,22 @@
                 android:layout_height="match_parent">
 
                 <LinearLayout
-                    android:id="@+id/tabMienBac"
+                    android:id="@+id/tabHienTai"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <include layout="@layout/layout_thoi_tiet_mien_bac"></include>
+                    <include layout="@layout/activity_weather_current_location"></include>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/tabMienTrung"
+                    android:id="@+id/tabNoiKhac"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <include layout="@layout/layout_thoi_tiet_mien_trung"></include>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/tabMienNam"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <include layout="@layout/layout_thoi_tiet_mien_nam"></include>
+                    <include layout="@layout/activity_choose_address"></include>
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>
