@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         BottomNavigation bottomNavigation=(BottomNavigation)findViewById(R.id.bottom_navigation);
-        bottomNavigation.setDefaultItem(4);
+        bottomNavigation.setDefaultItem(0);
         bottomNavigation.setOnSelectedItemChangeListener(new OnSelectedItemChangeListener() {
             @Override
             public void onSelectedItemChanged(int itemId) {

@@ -1,6 +1,9 @@
 package com.example.appketquaxoso;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +18,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.adapter.ChatAdapter;
+import com.example.callback.TaiKhoanOnClickListener;
 import com.example.firebase.ChatMessage;
 import com.example.model.User;
+import com.example.sharedpreferences.SharedPreferencesManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -46,14 +51,38 @@ public class HoiNhomFragment extends Fragment {
     ChatAdapter adapter;
     ArrayList<ChatMessage> dsMessages;
     ArrayList<String> dsKEY = new ArrayList<>();
-    User user;
+    User user=null;
+    DialogTaiKhoan dialogTaiKhoan;
+    SharedPreferences sharedPreferences;
     private DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
     String urlImage = "https://github.com/quoccuong151197/AppAndroid/blob/master/app/src/main/res/drawable/ic_fist_sub.png";
     private static final String TAG = "ChatActivity";
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = (View) inflater.inflate(R.layout.fragment_hoi_nhom, container, false);
-        addControls();
-        addEvents();
+        if (SharedPreferencesManager.isPrefUser()==true){
+            dialogTaiKhoan= new DialogTaiKhoan(view.getContext(), new TaiKhoanOnClickListener() {
+                @Override
+                public void onButtonClick(String username) {
+                    user= new User(username);
+                    String s=user.getUserName();
+                    PreferenceManager.getDefaultSharedPreferences(view.getContext()).edit().putString("INFO",user.getUserName()).apply();
+                    SharedPreferencesManager.setPrefUser(false);
+                    addControls();
+                    addEvents();
+                }
+            });
+            dialogTaiKhoan.show();
+            String sss=SharedPreferencesManager.getInfoUser();
+            String sssd=SharedPreferencesManager.getInfoUser();
+        }
+        else {
+            String sa= PreferenceManager.getDefaultSharedPreferences(view.getContext()).getString("INFO","abc");
+            user= new User(sa);
+            addControls();
+            addEvents();
+        }
+
+
         return view;
     }
 
@@ -72,7 +101,7 @@ public class HoiNhomFragment extends Fragment {
     }
 
     private void addControls() {
-        user= new User("thuyhuynh");
+
         dsMessages = new ArrayList<>();
         fabSend = view.findViewById(R.id.fab);
         edtInput = view.findViewById(R.id.edtInput);
